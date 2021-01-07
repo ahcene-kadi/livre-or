@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$erreur = [                                                       //tableau de gestion d'erreurs
+$erreur = [                                                       
   'commentaire' => ''
 ];   
 
@@ -9,19 +9,18 @@ if(!$_SESSION['connecte']){
   header('Location: index.php');
 }
 if(isset($_POST['formcommentaire'])){
-  //verifie le commentaire
   if(empty($_POST['commentaire'])){
     $erreur['commentaire']='<span class="text-danger">Veuillez rentrer un commentaire.</span>';
   } else {
     try{
-      $pdo = new PDO("mysql:host=localhost;dbname=livreor","root","");    //chaine de connexion
+      $pdo = new PDO("mysql:host=localhost;dbname=livreor","root",""); 
     }
     catch(PDOexception $e){
-      echo $e -> getMessage();  //gestion des erreurs
+      echo $e -> getMessage(); 
       exit();
     }
     $today = date("Y-m-d H:i:s");  
-    $ins = $pdo -> prepare("INSERT INTO commentaires (commentaire, id_utilisateur, date) VALUES (?, ?, ?)");   //preparation des requetes
+    $ins = $pdo -> prepare("INSERT INTO commentaires (commentaire, id_utilisateur, date) VALUES (?, ?, ?)"); 
     $ins -> execute([$_POST['commentaire'], $_SESSION['id'], $today]);
     $ins = null;
     $pdo = null;
